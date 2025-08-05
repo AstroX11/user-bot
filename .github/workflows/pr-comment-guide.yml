@@ -1,49 +1,54 @@
-name: respond to pr comment
+name: pr comment
 
 on:
-  issue_comment:
-    types: [created]
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - unlocked
 
 jobs:
-  respond-to-pr:
-    if: github.event.issue.pull_request != null
+  pr-comment:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: write-all
 
     steps:
-      - name: post reply with install instructions
-        uses: actions/github-script@v7
+      - uses: actions/checkout@v3
+
+      - uses: mshick/add-pr-comment@v2
         with:
-          script: |
-            const prNumber = context.issue.number;
-            const repo = context.repo.repo;
-            const owner = context.repo.owner;
+          repo-token: ${{ secrets.PERSONAL_TOKEN }}
+          message-id: pr-test
+          message: |
+            thanks for opening this pull request and contributing!
 
-            const message = [
-              'thanks for contributing 🙌',
-              '',
-              'you can test this pull request locally by installing the branch directly:',
-              '',
-              '**npm**',
-              '```bash',
-              `npm install github:${owner}/${repo}#pull/${prNumber}/head`,
-              '```',
-              '',
-              '**yarn**',
-              '```bash',
-              `yarn add github:${owner}/${repo}#pull/${prNumber}/head`,
-              '```',
-              '',
-              '**pnpm**',
-              '```bash',
-              `pnpm add github:${owner}/${repo}#pull/${prNumber}/head`,
-              '```',
-              '',
-              'let us know if you run into any issues!'
-            ].join('\n');
+            maintainers will review your changes soon. if all is good, it'll be merged.
 
-            await github.rest.issues.createComment({
-              issue_number: prNumber,
-              owner,
-              repo,
-              body: message,
-            });
+            meanwhile, the community is welcome to test and share feedback.
+
+            ### ✅ how to confirm it works
+
+            if you tested this pr, please comment:
+
+            ```
+            tested and working ✅
+            ```
+
+            this helps speed up review and merging.
+
+            ### 📦 how to test this pr locally
+
+            ```
+            # npm
+            npm install github:AstroX11/user-bot#${{ github.event.pull_request.head.ref }}
+
+            # yarn (v2+)
+            yarn add github:AstroX11/user-bot#${{ github.event.pull_request.head.ref }}
+
+            # pnpm
+            pnpm add github:AstroX11/user-bot#${{ github.event.pull_request.head.ref }}
+            ```
+
+            if you run into any problems or have feedback, just comment here.
