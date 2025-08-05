@@ -1,4 +1,4 @@
-`**User Bot**`
+**`User Bot`**
 
 User Bot is a third party open source automation tool that helps you simplify and manage your WhatsApp interactions easily.
 
