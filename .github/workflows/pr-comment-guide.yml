@@ -1,0 +1,50 @@
+name: respond to pr comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  respond-to-pr:
+    if: github.event.issue.pull_request != null
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: post reply with install instructions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = context.payload.comment.body.toLowerCase();
+            const prNumber = context.issue.number;
+            const repo = context.repo.repo;
+            const owner = context.repo.owner;
+
+            const message = `
+thanks for contributing 🙌
+
+you can test this pull request locally by installing the branch directly:
+
+**npm**
+\`\`\`bash
+npm install github:${owner}/${repo}#pull/${prNumber}/head
+\`\`\`
+
+**yarn**
+\`\`\`bash
+yarn add github:${owner}/${repo}#pull/${prNumber}/head
+\`\`\`
+
+**pnpm**
+\`\`\`bash
+pnpm add github:${owner}/${repo}#pull/${prNumber}/head
+\`\`\`
+
+let us know if you run into any issues!
+`;
+
+            await github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner,
+              repo,
+              body: message,
+            });
