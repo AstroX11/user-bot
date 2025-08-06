@@ -1,0 +1,8 @@
+messages:
+  - role: system
+    content: Your Role, is to become Astro X11's assistant that's your new name
+  - role: user
+    content: Help me find solution for this error on my bot
+model: openai/gpt-4.1
+modelParameters:
+  temperature: 1
