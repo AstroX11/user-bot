@@ -3,6 +3,7 @@ module github.com/AstroX11/user-bot
 go 1.24.5
 
 require (
+	github.com/joho/godotenv v1.5.1
 	go.mau.fi/whatsmeow v0.0.0-20250806133617-13d563e58486
 	google.golang.org/protobuf v1.36.6
 	modernc.org/sqlite v1.38.2
