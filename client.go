@@ -29,7 +29,7 @@ func main() {
 	}
 
 	device, _ := store.GetFirstDevice(ctx)
-	waClient = whatsmeow.NewClient(device, waLog.Stdout("Client", "INFO", true)) // fixed assignment
+	waClient = whatsmeow.NewClient(device, waLog.Stdout("Client", "INFO", true))
 	waClient.AddEventHandler(ev.EventHandler)
 
 	err := waClient.Connect()
@@ -38,6 +38,7 @@ func main() {
 	}
 
 	utils.PairClient(ctx, waClient, AppConfig)
+	utils.PortServe()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)

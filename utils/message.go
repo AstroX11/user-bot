@@ -23,3 +23,7 @@ func ExtractText(msg *waE2E.Message) string {
 	}
 	return ""
 }
+
+func GetQuotedMessage(msg *waE2E.ContextInfo) {
+
+}
