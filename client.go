@@ -15,6 +15,7 @@ import (
 	ev "github.com/AstroX11/user-bot/events"
 	sql "github.com/AstroX11/user-bot/sql"
 	"github.com/AstroX11/user-bot/utils"
+	_ "github.com/AstroX11/user-bot/messaging/plugins"
 )
 
 var waClient *whatsmeow.Client

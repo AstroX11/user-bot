@@ -1,14 +1,17 @@
 package events
 
 import (
+	"fmt"
+	"regexp"
 	"strings"
-
-	"go.mau.fi/whatsmeow/types/events"
 
 	"github.com/AstroX11/user-bot/messaging"
 	"github.com/AstroX11/user-bot/sql"
 	"github.com/AstroX11/user-bot/utils"
+	"go.mau.fi/whatsmeow/types/events"
 )
+
+var commandRegex = regexp.MustCompile(`(?i)^\. *([a-z0-9_]+)`)
 
 func Plugins(msg *events.Message) {
 	if msg.Message == nil {
@@ -16,10 +19,6 @@ func Plugins(msg *events.Message) {
 	}
 
 	messageText := utils.ExtractText(msg.Message)
-	if messageText == "" {
-		return
-	}
-
 	if messageText == "" {
 		return
 	}
@@ -34,16 +33,23 @@ func Plugins(msg *events.Message) {
 		return
 	}
 
-	command := strings.ToLower(strings.Fields(messageText)[0])
+	match := commandRegex.FindStringSubmatch(messageText)
+	if len(match) < 2 {
+		return
+	}
+	cmdName := strings.ToLower(match[1])
+	args := strings.Fields(messageText)[1:]
 
-	switch command {
-	case prefix + "ping":
-		messaging.Ping(msg)
-	case prefix + "alive":
-		messaging.Alive(msg)
-	case prefix + "menu":
-		messaging.Help(msg)
-	default:
-		messaging.Unknown(msg, command)
+	cmd := messaging.FindCommand(cmdName)
+	if cmd != nil {
+		cmd.Handler(msg, args)
+		return
+	}
+
+	suggestion := messaging.SuggestCommand(cmdName)
+	if suggestion != "" {
+		utils.SendMessage(msg.Info.Chat, fmt.Sprintf("❌ Command `%s` not found. Did you mean `%s%s`?", cmdName, prefix, suggestion))
+	} else {
+		utils.SendMessage(msg.Info.Chat, fmt.Sprintf("❌ Command `%s` not found.", cmdName))
 	}
 }

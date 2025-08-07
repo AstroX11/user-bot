@@ -1,29 +1,36 @@
-package messaging
+package plugins
 
 import (
 	"fmt"
 	"runtime"
+	"sort"
 	"time"
 
 	"github.com/AstroX11/user-bot/config"
+	"github.com/AstroX11/user-bot/messaging"
 	"github.com/AstroX11/user-bot/messaging/helpers"
 	"github.com/AstroX11/user-bot/sql"
+	"github.com/AstroX11/user-bot/types"
 	"github.com/AstroX11/user-bot/utils"
 	"go.mau.fi/whatsmeow/types/events"
 )
 
-func Help(msg *events.Message) {
+func init() {
+	messaging.RegisterCommand(&types.Command{
+		Name:     "menu",
+		Category: "System",
+		FromMe:   false,
+		IsGroup:  false,
+		Handler:  Help,
+	})
+}
+
+var startedAt = time.Now()
+
+func Help(msg *events.Message, _ []string) {
 	prefix, err := sql.GetPrefix()
 	if err != nil || prefix == "" {
 		prefix = "."
-	}
-
-	commands := []string{"ping", "alive", "help"}
-
-	var cmds []string
-	for i, cmd := range commands {
-		fancy := utils.FancyText(cmd)
-		cmds = append(cmds, fmt.Sprintf("%d. %s%s", i+1, prefix, fancy))
 	}
 
 	owner := config.AppConfig.UserName
@@ -44,10 +51,23 @@ func Help(msg *events.Message) {
 	date := time.Now().Format("01/02/2006")
 	tm := time.Now().Format("15:04:05")
 
+	allCommands := messaging.GetAllCommands()
+	categorized := make(map[string][]string)
+
+	for _, cmd := range allCommands {
+		categorized[cmd.Category] = append(categorized[cmd.Category], prefix+utils.FancyText(cmd.Name))
+	}
+
+	var categories []string
+	for cat := range categorized {
+		categories = append(categories, cat)
+	}
+	sort.Strings(categories)
+
 	infoBlock := fmt.Sprintf("```╭─── %s ────\n", botName) +
 		fmt.Sprintf("│ User: %s\n", pushName) +
 		fmt.Sprintf("│ Owner: %s\n", owner) +
-		fmt.Sprintf("│ Plugins: %d\n", len(commands)) +
+		fmt.Sprintf("│ Plugins: %d\n", len(allCommands)) +
 		fmt.Sprintf("│ Mode: %s\n", mode) +
 		fmt.Sprintf("│ Uptime: %s\n", helpers.FormatRuntime(uptime)) +
 		fmt.Sprintf("│ Platform: %s\n", runtime.GOOS) +
@@ -58,11 +78,24 @@ func Help(msg *events.Message) {
 		fmt.Sprintf("│ Go: %s\n", runtime.Version()) +
 		"╰─────────────```\n"
 
-	cmdBlock := "```╭─── Commands ───╮\n"
-	for _, item := range cmds {
-		cmdBlock += fmt.Sprintf("│ %s\n", item)
-	}
-	cmdBlock += "╰────────────────╯```"
+	cmdBlock := ""
+	for _, cat := range categories {
+		cmds := categorized[cat]
+		fancyCat := utils.FancyText(cat)
 
-	utils.SendMessage(msg.Info.Chat, infoBlock+"\n"+cmdBlock)
+		top := fmt.Sprintf("╭─── %s ───", fancyCat)
+
+		lines := make([]string, len(cmds))
+		for i, cmd := range cmds {
+			lines[i] = fmt.Sprintf("│ %d %s", i+1, cmd)
+		}
+
+		cmdBlock += "```" + top + "\n"
+		for _, line := range lines {
+			cmdBlock += line + "\n"
+		}
+		cmdBlock += "╰───────```\n"
+	}
+
+	utils.SendMessage(msg.Info.Chat, infoBlock+cmdBlock)
 }
