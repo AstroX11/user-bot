@@ -3,6 +3,7 @@ module github.com/AstroX11/user-bot
 go 1.24.5
 
 require (
+	github.com/go-audio/wav v1.1.0
 	github.com/joho/godotenv v1.5.1
 	go.mau.fi/whatsmeow v0.0.0-20250806133617-13d563e58486
 	google.golang.org/protobuf v1.36.6
@@ -12,6 +13,8 @@ require (
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
+	github.com/go-audio/audio v1.0.0 // indirect
+	github.com/go-audio/riff v1.0.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
