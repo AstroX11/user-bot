@@ -49,3 +49,5 @@ func FormatRuntime(d time.Duration) string {
 
 	return result
 }
+
+var StartedAt = time.Now()

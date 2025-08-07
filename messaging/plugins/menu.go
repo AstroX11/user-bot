@@ -25,7 +25,6 @@ func init() {
 	})
 }
 
-var startedAt = time.Now()
 
 func Help(msg *events.Message, _ []string) {
 	prefix, err := sql.GetPrefix()
@@ -46,7 +45,7 @@ func Help(msg *events.Message, _ []string) {
 		pushName = "Unknown"
 	}
 	mode := "Public"
-	uptime := time.Since(startedAt)
+	uptime := time.Since(helpers.StartedAt)
 	day := time.Now().Weekday().String()
 	date := time.Now().Format("01/02/2006")
 	tm := time.Now().Format("15:04:05")

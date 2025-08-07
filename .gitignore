@@ -137,3 +137,4 @@ dist
 *.db
 whatsmeow.db-shm
 whatsmeow.db-wal
+*.exe
