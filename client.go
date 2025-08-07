@@ -11,6 +11,7 @@ import (
 	"go.mau.fi/whatsmeow/store/sqlstore"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
+	"github.com/AstroX11/user-bot/config"
 	ev "github.com/AstroX11/user-bot/events"
 	sql "github.com/AstroX11/user-bot/sql"
 	"github.com/AstroX11/user-bot/utils"
@@ -37,7 +38,8 @@ func main() {
 		log.Fatal("Connection failed:", err)
 	}
 
-	utils.PairClient(ctx, waClient, AppConfig)
+	utils.PairClient(ctx, waClient, config.AppConfig)
+	utils.SetClient(waClient)
 	utils.PortServe()
 
 	stop := make(chan os.Signal, 1)

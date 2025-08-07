@@ -2,6 +2,7 @@ package messaging
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/AstroX11/user-bot/utils"
@@ -13,7 +14,7 @@ func Ping(msg *events.Message) {
 
 	id, err := utils.SendMessage(msg.Info.Chat, "🏓 Pong!")
 	if err != nil {
-		return
+		log.Panicln(err)
 	}
 
 	duration := time.Since(start)

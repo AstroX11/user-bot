@@ -41,7 +41,7 @@ func Plugins(msg *events.Message) {
 		messaging.Ping(msg)
 	case prefix + "alive":
 		messaging.Alive(msg)
-	case prefix + "help":
+	case prefix + "menu":
 		messaging.Help(msg)
 	default:
 		messaging.Unknown(msg, command)

@@ -13,6 +13,7 @@ func Unknown(msg *events.Message, command string) {
 	if err != nil || prefix == "" {
 		prefix = "."
 	}
-	response := fmt.Sprintf("❓ Unknown command: %s\n\nType %phelp to see available commands.", command, &prefix)
+
+	response := fmt.Sprintf("❓ Unknown command: %s\n\nType %shelp to see available commands.", command, prefix)
 	_, _ = utils.SendMessage(msg.Info.Chat, response)
 }
