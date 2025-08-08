@@ -8,22 +8,22 @@ import (
 	"os/exec"
 )
 
-func ImageToWebp(inputPath, outputPath string) error {
+func ImageToWebp(path, out string) error {
 	args := []string{
-		"-i", inputPath,
+		"-i", path,
 		"-vcodec", "libwebp",
 		"-vf", "scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15,pad=320:320:-1:-1:color=white@0.0",
 		"-lossless", "1",
 		"-preset", "default",
 		"-an",
-		"-y", outputPath,
+		"-y", out,
 	}
 	return runFFmpeg(args)
 }
 
-func VideoToWebp(inputPath, outputPath string, durationSec int) error {
+func VideoToWebp(path, out string, durationSec int) error {
 	args := []string{
-		"-i", inputPath,
+		"-i", path,
 		"-vcodec", "libwebp",
 		"-vf", "scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15,pad=320:320:-1:-1:color=white@0.0",
 		"-loop", "0",
@@ -31,7 +31,7 @@ func VideoToWebp(inputPath, outputPath string, durationSec int) error {
 		fmt.Sprintf("-t=%02d", durationSec),
 		"-preset", "default",
 		"-an",
-		"-y", outputPath,
+		"-y", out,
 	}
 	return runFFmpeg(args)
 }
