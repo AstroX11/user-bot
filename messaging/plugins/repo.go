@@ -17,5 +17,5 @@ func init() {
 }
 
 func repo(msg *events.Message, _ []string) {
-	 utils.SendImage(msg.Info.Sender, "./resources/logo.png", "Simple User WhatsAppBot\nhttps://github.com/AstroX11/user-bot")
+	 utils.SendImage(msg.Info.Chat, "./resources/logo.png", "Simple User WhatsAppBot\nhttps://github.com/AstroX11/user-bot")
 }
