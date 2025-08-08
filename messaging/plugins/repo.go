@@ -12,10 +12,8 @@ func init() {
 		Name:     "repo",
 		FromMe:   false,
 		Category: "misc",
-		Handler:  repo,
+		Handler: func(msg *events.Message, _ []string) {
+			utils.SendImage(msg.Info.Chat, "./resources/logo.png", "Simple User WhatsAppBot\nhttps://github.com/AstroX11/user-bot")
+		},
 	})
-}
-
-func repo(msg *events.Message, _ []string) {
-	 utils.SendImage(msg.Info.Chat, "./resources/logo.png", "Simple User WhatsAppBot\nhttps://github.com/AstroX11/user-bot")
 }
