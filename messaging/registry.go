@@ -3,7 +3,7 @@ package messaging
 import (
 	"strings"
 
-	"github.com/AstroX11/user-bot/types"
+	"bot/types"
 )
 
 var commandRegistry = make(map[string]*types.Command)

@@ -6,12 +6,13 @@ import (
 	"sort"
 	"time"
 
-	"github.com/AstroX11/user-bot/config"
-	"github.com/AstroX11/user-bot/messaging"
-	"github.com/AstroX11/user-bot/messaging/helpers"
-	"github.com/AstroX11/user-bot/sql"
-	"github.com/AstroX11/user-bot/types"
-	"github.com/AstroX11/user-bot/utils"
+	"bot/config"
+	"bot/messaging"
+	"bot/messaging/helpers"
+	"bot/sql"
+	"bot/types"
+	"bot/utils"
+
 	"go.mau.fi/whatsmeow/types/events"
 )
 
@@ -24,7 +25,6 @@ func init() {
 		Handler:  Help,
 	})
 }
-
 
 func Help(msg *events.Message, _ []string) {
 	prefix, err := sql.GetPrefix()

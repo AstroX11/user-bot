@@ -11,14 +11,14 @@ import (
 	"go.mau.fi/whatsmeow/store/sqlstore"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
-	"github.com/AstroX11/user-bot/config"
-	ev "github.com/AstroX11/user-bot/events"
-	sql "github.com/AstroX11/user-bot/sql"
-	"github.com/AstroX11/user-bot/utils"
-	_ "github.com/AstroX11/user-bot/messaging/plugins"
+	"bot/config"
+	ev "bot/events"
+	_ "bot/messaging/plugins"
+	sql "bot/sql"
+	"bot/utils"
 )
 
-var waClient *whatsmeow.Client
+var client *whatsmeow.Client
 
 func main() {
 	ctx := context.Background()
@@ -31,21 +31,21 @@ func main() {
 	}
 
 	device, _ := store.GetFirstDevice(ctx)
-	waClient = whatsmeow.NewClient(device, waLog.Stdout("Client", "INFO", true))
-	waClient.AddEventHandler(ev.EventHandler)
+	client = whatsmeow.NewClient(device, waLog.Stdout("Client", "INFO", true))
+	client.AddEventHandler(ev.EventHandler)
 
-	err := waClient.Connect()
+	err := client.Connect()
 	if err != nil {
 		log.Fatal("Connection failed:", err)
 	}
 
-	utils.PairClient(ctx, waClient, config.AppConfig)
-	utils.SetClient(waClient)
+	utils.PairClient(ctx, client, config.AppConfig)
+	utils.SetClient(client)
 	utils.PortServe()
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	waClient.Disconnect()
+	client.Disconnect()
 }

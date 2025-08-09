@@ -7,7 +7,7 @@ import (
 
 	"go.mau.fi/whatsmeow"
 
-	app "github.com/AstroX11/user-bot/types"
+	app "bot/types"
 )
 
 func PairClient(ctx context.Context, client *whatsmeow.Client, config app.Config) {
@@ -16,7 +16,11 @@ func PairClient(ctx context.Context, client *whatsmeow.Client, config app.Config
 
 		log.Println("Pairing new session with phone number:", config.UserPN)
 
-		code, err := client.PairPhone(ctx, config.UserPN, true, whatsmeow.PairClientChrome, "Chrome (Linux)")
+		if len(config.UserPN) < 11 {
+			log.Fatal("Phone number too short. Please provide a valid international phone number (e.g., 12345678900).")
+		}
+
+		code, err := client.PairPhone(ctx, config.UserPN, true, whatsmeow.PairClientChrome, "Chrome (Windows)")
 		if err != nil {
 			log.Fatal("Pairing failed:", err)
 		}

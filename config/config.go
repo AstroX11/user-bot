@@ -3,7 +3,8 @@ package config
 import (
 	"os"
 
-	"github.com/AstroX11/user-bot/types"
+	"bot/types"
+
 	"github.com/joho/godotenv"
 )
 

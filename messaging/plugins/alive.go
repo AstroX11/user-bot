@@ -5,9 +5,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/AstroX11/user-bot/messaging"
-	"github.com/AstroX11/user-bot/types"
-	"github.com/AstroX11/user-bot/utils"
+	"bot/messaging"
+	"bot/types"
+	"bot/utils"
+
 	"go.mau.fi/whatsmeow/types/events"
 )
 

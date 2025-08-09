@@ -5,9 +5,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/AstroX11/user-bot/messaging"
-	"github.com/AstroX11/user-bot/sql"
-	"github.com/AstroX11/user-bot/utils"
+	"bot/messaging"
+	"bot/sql"
+	"bot/utils"
+
 	"go.mau.fi/whatsmeow/types/events"
 )
 
