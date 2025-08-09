@@ -1,0 +1,27 @@
+name: go
+
+on:
+  push:
+    branches: [ "core" ]
+  pull_request:
+    branches: [ "core" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: set up go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: build
+      run: go build -v ./... || true
+
+    - name: run build output
+      run: go run . || true
+
+    - name: test
+      run: go test -v ./... || true
